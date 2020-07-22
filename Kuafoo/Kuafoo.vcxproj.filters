@@ -44,7 +44,13 @@
     <ClCompile Include="common\ImageHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controllers\tools\formater\ImageFormaterController.cpp">
+    <ClCompile Include="views\tools\formater\ToolsFormaterImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="controllers\tools\formater\ToolsFormaterImageController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -52,8 +58,21 @@
     <ClInclude Include="common\ImageHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controllers\tools\formater\ImageFormaterController.h">
+    <ClInclude Include="controllers\tools\formater\ToolsFormaterImageController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="views\tools\formater\ToolsFormaterImage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="views\tools\formater\ToolsFormaterImage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

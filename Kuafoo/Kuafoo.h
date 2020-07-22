@@ -12,4 +12,7 @@ public:
 
 private:
     Ui::KuafooClass ui;
+
+private slots:
+    void on_actionImageFormater_triggered();
 };
