@@ -2,8 +2,9 @@
 
 bool ToolsFormaterImageController::saveAsTiff(QString path, std::vector<cv::Mat> matrix)
 {
-	if (matrix.size <= 0)
-		return;
+	if (matrix.size() <= 0)
+		return false;
+	
 
 	return true;
 }

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ToolsFormaterImage</string>
+   <string>格式转换</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -28,10 +28,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_5"/>
+          <widget class="QLineEdit" name="leSrcFolder"/>
          </item>
          <item>
-          <widget class="QPushButton" name="pbScan_5">
+          <widget class="QPushButton" name="pbScan">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -50,7 +50,7 @@
        <widget class="QWidget" name="wgtFiles_2" native="true">
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
-          <widget class="QListView" name="listView_3"/>
+          <widget class="QListView" name="lsvFiles"/>
          </item>
          <item>
           <widget class="QWidget" name="wgtOperation_3" native="true">
@@ -74,7 +74,7 @@
              <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="pbAdd_3">
+             <widget class="QPushButton" name="pbAdd">
               <property name="minimumSize">
                <size>
                 <width>30</width>
@@ -87,7 +87,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pbDel_3">
+             <widget class="QPushButton" name="pbDel">
               <property name="minimumSize">
                <size>
                 <width>30</width>
@@ -129,10 +129,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_6"/>
+          <widget class="QLineEdit" name="leOutput"/>
          </item>
          <item>
-          <widget class="QPushButton" name="pbScan_6">
+          <widget class="QPushButton" name="pbSaveFolder">
            <property name="maximumSize">
             <size>
              <width>40</width>
@@ -190,14 +190,14 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pbSubmit_3">
+          <widget class="QPushButton" name="pbSubmit">
            <property name="text">
             <string>确定</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pbCancle_3">
+          <widget class="QPushButton" name="pbCancle">
            <property name="text">
             <string>取消</string>
            </property>
