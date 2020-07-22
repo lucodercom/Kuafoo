@@ -1,9 +1,10 @@
 #pragma once
 #include <opencv2/opencv.hpp>
+#include <QString>
 class ToolsFormaterImageController
 {
 public:
-	cv::Mat ConvertToTiff(std::vector<cv::Mat> matrix);
-	cv::Mat ConvertToOthers(std::vector<cv::Mat> matrix);
+	bool saveAsTiff(QString path,std::vector<cv::Mat> matrix);
+	bool saveAsOthers(QString path,std::vector<cv::Mat> matrix);
 };
 
