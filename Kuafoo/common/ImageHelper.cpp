@@ -1,13 +1,13 @@
 #include "ImageHelper.h"
 #include <qDebug>
 
-std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString image)
+std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString image, int bandSize)
 {
 	std::vector<cv::Mat> matrix;
 	//GDAL读取所有的波段
 	//GDAL按照顺序保存所有的波段
 	GDALAllRegister();//注册、读取图像
-	CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");//使之支持中文路径
+	CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "YES");//使之支持中文路径
 	GDALDataset* poDataset = nullptr;
 	poDataset = (GDALDataset*)GDALOpen(image.toStdString().c_str(), GA_ReadOnly);
 	if (poDataset == nullptr)
@@ -16,11 +16,13 @@ std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString imag
 	}
 
 	int bandPointer = 0;
-	for (int i = 1; i <= poDataset->GetRasterCount(); i++)
+	if (bandSize <= 0)
+		bandSize = poDataset->GetRasterCount();
+	for (int i = 1; i <= bandSize; i++)
 	{
 		int bandList = { 1 };
 		cv::Mat band0 = cv::Mat(poDataset->GetRasterYSize(), poDataset->GetRasterXSize(), gdalType2opencvType(poDataset->GetRasterBand(i)->GetRasterDataType()), cv::Scalar::all(0));
-		poDataset->RasterIO(GF_Read, 0, 0, band0.cols, band0.rows, band0.data, band0.cols, band0.rows, opencvType2GdalType(band0.type()), 1, &bandList, 0, 0, 0);
+		poDataset->RasterIO(GF_Read, 0, 0, band0.cols, band0.rows, band0.data, band0.cols, band0.rows, opencvType2GdalType(band0.type()), i, &bandList, 0, 0, 0);
 
 		matrix.push_back(band0);
 	}
@@ -32,7 +34,7 @@ std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString imag
 
 void ImageHelper::saveImageFromMatrixVectorWithGDAL(QString image, std::vector<cv::Mat> matrix)
 {
-	
+
 }
 
 int ImageHelper::gdalType2opencvType(GDALDataType gdalType) {
@@ -49,6 +51,28 @@ int ImageHelper::gdalType2opencvType(GDALDataType gdalType) {
 		return CV_8UC1;
 	}
 }
+cv::Mat ImageHelper::convert28UMatrix(cv::Mat img)
+{
+	int width = img.cols;//图片宽度
+	int height = img.rows;//图片高度
+	cv::Mat dst = cv::Mat::zeros(height, width, CV_8UC1);//先生成空的目标图片
+	double minv = 0.0, maxv = 0.0;
+	double* minp = &minv;
+	double* maxp = &maxv;
+	minMaxIdx(img, minp, maxp);  //取得像素值最大值和最小值
+
+	//用指针访问像素，速度更快
+	ushort* p_img;
+	uchar* p_dst;
+	for (int i = 0; i < height; i++)
+	{
+		p_img = img.ptr<ushort>(i);//获取每行首地址
+		p_dst = dst.ptr<uchar>(i);
+		for (int j = 0; j < width; ++j)
+			p_dst[j] = (p_img[j] - minv) / (maxv - minv) * 255;
+	}
+	return dst;
+}
 GDALDataType ImageHelper::opencvType2GdalType(int opencv) {
 	switch (opencv)
 	{
@@ -63,7 +87,7 @@ GDALDataType ImageHelper::opencvType2GdalType(int opencv) {
 	}
 }
 
-QImage ImageHelper::cvMatToQImage(const cv::Mat & mat)
+QImage ImageHelper::cvMatToQImage(const cv::Mat& mat)
 {
 	// 8-bits unsigned, NO. OF CHANNELS = 1
 	if (mat.type() == CV_8UC1)
@@ -76,10 +100,10 @@ QImage ImageHelper::cvMatToQImage(const cv::Mat & mat)
 			image.setColor(i, qRgb(i, i, i));
 		}
 		// Copy input Mat
-		uchar *pSrc = mat.data;
+		uchar* pSrc = mat.data;
 		for (int row = 0; row < mat.rows; row++)
 		{
-			uchar *pDest = image.scanLine(row);
+			uchar* pDest = image.scanLine(row);
 			memcpy(pDest, pSrc, mat.cols);
 			pSrc += mat.step;
 		}
@@ -89,7 +113,7 @@ QImage ImageHelper::cvMatToQImage(const cv::Mat & mat)
 	else if (mat.type() == CV_8UC3)
 	{
 		// Copy input Mat
-		const uchar *pSrc = (const uchar*)mat.data;
+		const uchar* pSrc = (const uchar*)mat.data;
 		// Create QImage with same dimensions as input Mat
 		QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
 		return image.rgbSwapped();
@@ -98,7 +122,7 @@ QImage ImageHelper::cvMatToQImage(const cv::Mat & mat)
 	{
 		qDebug() << "CV_8UC4";
 		// Copy input Mat
-		const uchar *pSrc = (const uchar*)mat.data;
+		const uchar* pSrc = (const uchar*)mat.data;
 		// Create QImage with same dimensions as input Mat
 		QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_ARGB32);
 		return image.copy();

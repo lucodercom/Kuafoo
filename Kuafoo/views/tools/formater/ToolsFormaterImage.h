@@ -1,5 +1,4 @@
-#pragma once
-
+#include "../../../common/stdfix.h"
 #include <QWidget>
 #include "ui_ToolsFormaterImage.h"
 #include "../../../controllers/tools/formater/ToolsFormaterImageController.h"
@@ -15,6 +14,7 @@ public:
 private:
 	Ui::ToolsFormaterImage ui;
 	ToolsFormaterImageController* controller;
+	void logInfo(QString info);
 private slots:
 	void on_pbScan_clicked();
 	void on_pbAdd_clicked();

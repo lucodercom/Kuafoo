@@ -1,4 +1,4 @@
-#pragma once
+#include "../../../common/stdfix.h"
 #include <opencv2/opencv.hpp>
 #include <QString>
 class ToolsFormaterImageController
