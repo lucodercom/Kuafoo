@@ -18,18 +18,47 @@ std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString imag
 	int bandPointer = 0;
 	if (bandSize <= 0)
 		bandSize = poDataset->GetRasterCount();
-	for (int i = 1; i <= bandSize; i++)
+	
+	int width = poDataset->GetRasterXSize();
+	int height = poDataset->GetRasterYSize();
+	int nband =  poDataset->GetRasterCount();
+	bandSize = bandSize + 2 > nband ? nband : bandSize + 2;
+	//float* p = new float[width * height];
+	for (int i = 2; i <= bandSize; i++)
 	{
-		int bandList = { 1 };
-		cv::Mat band0 = cv::Mat(poDataset->GetRasterYSize(), poDataset->GetRasterXSize(), gdalType2opencvType(poDataset->GetRasterBand(i)->GetRasterDataType()), cv::Scalar::all(0));
-		poDataset->RasterIO(GF_Read, 0, 0, band0.cols, band0.rows, band0.data, band0.cols, band0.rows, opencvType2GdalType(band0.type()), i, &bandList, 0, 0, 0);
+		cv::Mat band0 = cv::Mat(height, width, gdalType2opencvType(poDataset->GetRasterBand(i)->GetRasterDataType()), cv::Scalar::all(0));
 
-		matrix.push_back(band0);
+		poDataset->GetRasterBand(i)->RasterIO(
+			GF_Read, 
+			0, 0, height, width,
+			band0.data, height, width,
+			poDataset->GetRasterBand(i)->GetRasterDataType(),
+			NULL,NULL);
+		matrix.push_back(band0.clone());
+		/*GDALRasterBand* bandData;
+		bandData = poDataset->GetRasterBand(i);
+		GDALDataType DataType = bandData->GetRasterDataType();
+		bandData->RasterIO(GF_Read, 0, 0, width, height, p, width, height, DataType, 0, 0);
+		cv::Mat HT(height, width, gdalType2opencvType(DataType), p);
+		matrix.push_back(HT.clone());*/
 	}
+
+	/*cv::Mat band0 = cv::Mat(poDataset->GetRasterYSize(), poDataset->GetRasterXSize(), gdalType2opencvType(poDataset->GetRasterBand(1)->GetRasterDataType()), cv::Scalar::all(0));
+	poDataset->RasterIO(GF_Read, 0, 0, band0.cols, band0.rows, band0.data, band0.cols, band0.rows, opencvType2GdalType(band0.type()), 1, 0, 0, 0, 0);
+	matrix.push_back(band0.clone());
+
+	cv::Mat band1 = cv::Mat(poDataset->GetRasterYSize(), poDataset->GetRasterXSize(), gdalType2opencvType(poDataset->GetRasterBand(2)->GetRasterDataType()), cv::Scalar::all(0));
+	poDataset->RasterIO(GF_Read, 0, 0, band1.cols, band1.rows, band1.data, band1.cols, band1.rows, opencvType2GdalType(band1.type()), 2, 0, 0, 0, 0);
+	matrix.push_back(band1.clone());
+
+	cv::Mat band2 = cv::Mat(poDataset->GetRasterYSize(), poDataset->GetRasterXSize(), gdalType2opencvType(poDataset->GetRasterBand(3)->GetRasterDataType()), cv::Scalar::all(0));
+	poDataset->RasterIO(GF_Read, 0, 0, band2.cols, band2.rows, band2.data, band2.cols, band2.rows, opencvType2GdalType(band2.type()), 3, 0, 0, 0, 0);
+	matrix.push_back(band2.clone());*/
 
 	//关闭GDAL库相关驱动和释放内存
 	GDALClose(poDataset);
 	return matrix;
+
 }
 
 void ImageHelper::saveImageFromMatrixVectorWithGDAL(QString image, std::vector<cv::Mat> matrix)

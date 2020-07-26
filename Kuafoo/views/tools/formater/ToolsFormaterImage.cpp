@@ -58,19 +58,23 @@ void ToolsFormaterImage::on_pbSubmit_clicked()
 	//QString current = "F:/数据/图像数据/高分四号/单波段/pic/00.tif";
 	QString current = "F:/数据/图像数据/高分四号/多光谱/0.tiff";
 	std::vector<cv::Mat> matrixs = helper.readImageIntoMatrixVectorWithGDAL(current,3);
-
 	//给每一个波段归一化
-	/*
-	cv::Mat matrix = currentMatrix / 8;*/
-	std::vector<cv::Mat> resultMatrixs;
-
 	for (size_t i = 0; i < matrixs.size(); i++)
 		matrixs[i] = helper.convert28UMatrix(matrixs[i]);
+
+	QString info;
+	for (int i = 0; i < matrixs.size(); i++)
+	{
+		info = QString("a%1.bmp").arg(i);
+		cv::imwrite(info.toStdString(), matrixs[i]);
+	}
+
+	//cv::imwrite("a2.bmp", matrixs[2]);
 
 	cv::Mat result;
 	cv::merge(matrixs, result);
 
-	cv::imwrite("a.bmp", result);
+	cv::imwrite("a.jpg", result);
 
 	//判断波段
 
