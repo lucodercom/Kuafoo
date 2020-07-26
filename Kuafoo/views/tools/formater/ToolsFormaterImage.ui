@@ -166,8 +166,28 @@
          <item>
           <widget class="QComboBox" name="cbxFormat">
            <property name="currentText">
-            <string/>
+            <string>jpg</string>
            </property>
+           <item>
+            <property name="text">
+             <string>jpg</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>bmp</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>png</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>jpeg</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

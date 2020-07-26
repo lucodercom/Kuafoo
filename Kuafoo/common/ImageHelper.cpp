@@ -21,10 +21,9 @@ std::vector<cv::Mat> ImageHelper::readImageIntoMatrixVectorWithGDAL(QString imag
 	
 	int width = poDataset->GetRasterXSize();
 	int height = poDataset->GetRasterYSize();
-	int nband =  poDataset->GetRasterCount();
-	bandSize = bandSize + 2 > nband ? nband : bandSize + 2;
+	int nband = 2;// poDataset->GetRasterCount();
 	//float* p = new float[width * height];
-	for (int i = 2; i <= bandSize; i++)
+	for (int i = nband; i <= nband + 3; i++)
 	{
 		cv::Mat band0 = cv::Mat(height, width, gdalType2opencvType(poDataset->GetRasterBand(i)->GetRasterDataType()), cv::Scalar::all(0));
 
