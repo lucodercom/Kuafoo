@@ -53,6 +53,9 @@
     <ClCompile Include="common\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="views\tools\formater\ToolsFormaterVideo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\ImageHelper.h">
@@ -72,9 +75,15 @@
     <QtMoc Include="views\tools\formater\ToolsFormaterImage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="views\tools\formater\ToolsFormaterVideo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="views\tools\formater\ToolsFormaterImage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="views\tools\formater\ToolsFormaterVideo.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

@@ -94,12 +94,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="Kuafoo.qrc" />
+    <QtUic Include="views\tools\formater\ToolsFormaterVideo.ui" />
     <QtUic Include="views\tools\formater\ToolsFormaterImage.ui" />
     <QtUic Include="Kuafoo.ui" />
     <QtMoc Include="Kuafoo.h" />
     <ClCompile Include="common\ImageHelper.cpp" />
     <ClCompile Include="controllers\tools\formater\ToolsFormaterImageController.cpp" />
     <ClCompile Include="common\Logger.cpp" />
+    <ClCompile Include="views\tools\formater\ToolsFormaterVideo.cpp" />
     <ClCompile Include="views\tools\formater\ToolsFormaterImage.cpp" />
     <ClCompile Include="Kuafoo.cpp" />
     <ClCompile Include="main.cpp" />
@@ -109,6 +111,7 @@
     <ClInclude Include="common\stdfix.h" />
     <ClInclude Include="controllers\tools\formater\ToolsFormaterImageController.h" />
     <ClInclude Include="common\Logger.h" />
+    <QtMoc Include="views\tools\formater\ToolsFormaterVideo.h" />
     <QtMoc Include="views\tools\formater\ToolsFormaterImage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
